@@ -8,10 +8,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.workshop.entities.Category;
 import com.workshop.entities.Order;
+import com.workshop.entities.Product;
 import com.workshop.entities.User;
 import com.workshop.entities.enums.OrderStatus;
+import com.workshop.repositories.ICategoryRepository;
 import com.workshop.repositories.IOrderRepository;
+import com.workshop.repositories.IProductRepository;
 import com.workshop.repositories.IUserRepository;
 
 @Configuration
@@ -24,8 +28,35 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private IOrderRepository orderRepository;
 	
+	@Autowired
+	private ICategoryRepository categoryRepository;
+	
+	@Autowired
+	private IProductRepository productRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Category cat1 = new Category(null, "Electronics");
+		Category cat2 = new Category(null, "Books");
+		Category cat3 = new Category(null, "Computers"); 
+		
+		Product p1 = new Product(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "UrlExample");
+		Product p2 = new Product(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "UrlExample");
+		Product p3 = new Product(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "UrlExample");
+		Product p4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "UrlExample");
+		Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "UrlExample"); 
+		
+		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+		
+		p1.getCategories().add(cat2);
+		p2.getCategories().add(cat1);
+		p3.getCategories().add(cat3);
+		p4.getCategories().add(cat3);
+		p5.getCategories().add(cat2);
+		
+		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 		
 		User user1 = new User(null, "Maria" , "maria@gmail.com", "99998888" , "password123");
 		User user2 = new User(null, "Pedro" , "pedro@gmail.com", "99997777" , "password123");
