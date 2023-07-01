@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.workshop.entities.Address;
 import com.workshop.entities.Category;
 import com.workshop.entities.Order;
 import com.workshop.entities.OrderItem;
@@ -15,6 +16,7 @@ import com.workshop.entities.Payment;
 import com.workshop.entities.Product;
 import com.workshop.entities.User;
 import com.workshop.entities.enums.OrderStatus;
+import com.workshop.repositories.IAddressRepository;
 import com.workshop.repositories.ICategoryRepository;
 import com.workshop.repositories.IOrderItemRepository;
 import com.workshop.repositories.IOrderRepository;
@@ -27,6 +29,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private IUserRepository userRepository;
+	
+	@Autowired
+	private IAddressRepository addressRepository;
 	
 	@Autowired
 	private IOrderRepository orderRepository;
@@ -70,9 +75,15 @@ public class TestConfig implements CommandLineRunner {
 		
 		userRepository.saveAll(Arrays.asList(user1, user2, user3));
 		
-		Order o1 = new Order(null, Instant.parse("2023-05-24T19:22:30Z"), OrderStatus.PAID, user3);
-		Order o2 = new Order(null, Instant.parse("2023-06-13T10:42:30Z"), OrderStatus.SHIPPED, user2);
-		Order o3 = new Order(null, Instant.parse("2023-05-24T21:32:45Z"), OrderStatus.CANCELED, user1);
+		Address ad1 = new Address(null, "Wall Street", "Centro Histórico", 1003L, "Lote 7");
+		Address ad2 = new Address(null, "Praça das Orquídeas", "Cidade Jardim", 450L, "Andar Térreo");
+		Address ad3 = new Address(null, "Vila Esperança", "Vila dos Sonhos", 257L, "Casa de Fundos");
+		
+		addressRepository.saveAll(Arrays.asList(ad1, ad2, ad3));
+		
+		Order o1 = new Order(null, Instant.parse("2023-05-24T19:22:30Z"), OrderStatus.PAID, user3, ad1);
+		Order o2 = new Order(null, Instant.parse("2023-06-13T10:42:30Z"), OrderStatus.SHIPPED, user2, ad2);
+		Order o3 = new Order(null, Instant.parse("2023-05-24T21:32:45Z"), OrderStatus.CANCELED, user1, ad3);
 		
 		orderRepository.saveAll(Arrays.asList(o1,o2,o3));
 		

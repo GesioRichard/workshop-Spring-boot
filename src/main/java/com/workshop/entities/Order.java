@@ -36,6 +36,10 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
+	
+	@ManyToOne
+	@JoinColumn(name = "address_id")
+	private Address destination;
 
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
@@ -46,11 +50,12 @@ public class Order {
 	public Order() {
 	}
 
-	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client, Address destination) {
 		this.id = id;
 		this.moment = moment;
 		this.orderStatus = orderStatus;
 		this.client = client;
+		this.destination = destination;
 	}
 
 	public Long getId() {
@@ -83,6 +88,14 @@ public class Order {
 
 	public void setClient(User client) {
 		this.client = client;
+	}
+
+	public Address getDestination() {
+		return destination;
+	}
+
+	public void setDestination(Address destination) {
+		this.destination = destination;
 	}
 
 	public Set<OrderItem> getItems() {
