@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.workshop.entities.Category;
 import com.workshop.entities.Order;
+import com.workshop.entities.OrderItem;
 import com.workshop.entities.Product;
 import com.workshop.entities.User;
 import com.workshop.entities.enums.OrderStatus;
 import com.workshop.repositories.ICategoryRepository;
+import com.workshop.repositories.IOrderItemRepository;
 import com.workshop.repositories.IOrderRepository;
 import com.workshop.repositories.IProductRepository;
 import com.workshop.repositories.IUserRepository;
@@ -33,6 +35,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private IProductRepository productRepository;
+	
+	@Autowired
+	private IOrderItemRepository orderItemRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -69,6 +74,13 @@ public class TestConfig implements CommandLineRunner {
 		Order o3 = new Order(null, Instant.parse("2023-05-24T21:32:45Z"), OrderStatus.CANCELED, user1);
 		
 		orderRepository.saveAll(Arrays.asList(o1,o2,o3));
+		
+		OrderItem oi1 = new OrderItem(o1, p1, 2);
+		OrderItem oi2 = new OrderItem(o1, p3, 1);
+		OrderItem oi3 = new OrderItem(o2, p3, 2);
+		OrderItem oi4 = new OrderItem(o3, p5, 2); 
+		
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 		
 	}
 
